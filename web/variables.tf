@@ -66,3 +66,27 @@ variable "egress_ip_protocol" {
     default = "-1"
 }
 
+# ===== Target Group Variables =====
+variable "lb_tg_name" {
+    type = string
+    description = "target group name for web app"
+    default = "web-app-tg"
+}
+
+variable "lb_tg_type" {
+    type = string
+    description = "target group type for web app"
+    default = "alb"
+}
+
+variable "lb_tg_port" {
+    type = number
+    description = "this is port number for target group"
+    default = 80
+}
+
+variable "lb_tg_protocol" {
+    type = string
+    description = "target group protocol web app"
+    default = "HTTP"
+}
