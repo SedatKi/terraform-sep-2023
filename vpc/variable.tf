@@ -25,7 +25,7 @@ variable "ports" {
 variable "cidr_blocks" {
     type = list(string)
     description = "these are cidr blocks for corresponding ports"
-    default = [ "personal-ip-here", "0.0.0.0/0", "0.0.0.0/0" ]
+    default = [ "your-ip", "0.0.0.0/0", "0.0.0.0/0" ]
 }
 
 variable "main_ami" {
