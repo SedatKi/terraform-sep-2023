@@ -8,8 +8,8 @@ resource "aws_lb" "main" {
   enable_deletion_protection = true
 
   access_logs {
-    bucket  = aws_s3_bucket.lb_logs.id
-    prefix  = "test-lb"
+    bucket  = "arn:aws:s3:::terraform-backend-sep-2023-sedat"
+    prefix  = "web"
     enabled = true
   }
 
@@ -29,5 +29,3 @@ resource "aws_lb_listener" "main" {
     target_group_arn = aws_lb_target_group.main.arn
   }
 }
-
-### //// WORK IN PROGRESS /////  NOT FINAL /////
