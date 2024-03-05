@@ -9,7 +9,7 @@ resource "aws_route53_record" "main" {
   }
 }
 
-resource "aws_route53_record" "example_root" {
+resource "aws_route53_record" "secondary" {
   zone_id = data.aws_route53_zone.main.zone_id
   name    = "cloudinjen.com"
   type    = "A"

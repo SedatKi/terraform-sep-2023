@@ -1,91 +1,43 @@
 resource "aws_launch_template" "main" {
-  name = "web-app-lt"
-    
-  block_device_mappings {
-    device_name = "/dev/sdf"
-
-    ebs {
-      volume_size = 20
-    }
-  }
-
-  capacity_reservation_specification {
-    capacity_reservation_preference = "open"
-  }
-
-  cpu_options {
-    core_count       = 4
-    threads_per_core = 2
-  }
-
-  credit_specification {
-    cpu_credits = "standard"
-  }
-
-  disable_api_stop        = true
-  disable_api_termination = true
-
-  ebs_optimized = true
-
-  elastic_gpu_specifications {
-    type = "test"
-  }
-
-  elastic_inference_accelerator {
-    type = "eia1.medium"
-  }
-
-  iam_instance_profile {
-    name = "test"
-  }
-
-  image_id = "ami-0c7217cdde317cfec"
-
-  instance_initiated_shutdown_behavior = "terminate"
-
-  instance_market_options {
-    market_type = "spot"
-  }
-
+  name          = "web-app-lt"
+  description   = "launch template for auto scaling group"
+  image_id      = "ami-0f5daaa3a7fb3378b"
   instance_type = "t2.micro"
 
-  kernel_id = "test"
+  # block_device_mappings {
+  #   device_name = "/dev/sdf"
 
-  key_name = "test"
+  #   ebs {
+  #     volume_size = 20
+  #   }
+  # }
 
-  license_specification {
-    license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
-  }
+  # disable_api_stop        = true
+  # disable_api_termination = true
 
-  metadata_options {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 1
-    instance_metadata_tags      = "enabled"
-  }
+  # ebs_optimized = true
 
-  monitoring {
-    enabled = true
-  }
+  # instance_initiated_shutdown_behavior = "terminate"
+
+  # metadata_options {
+  #   http_endpoint               = "enabled"
+  #   http_tokens                 = "required"
+  #   http_put_response_hop_limit = 1
+  #   instance_metadata_tags      = "enabled"
+  # }
 
   network_interfaces {
     associate_public_ip_address = true
-    security_groups = aws_security_group.main.id
+    security_groups             = [aws_security_group.main.id]
   }
-
-  placement {
-    availability_zone = "us-west-2a"
-  }
-
-  ram_disk_id = "test"
 
   tag_specifications {
     resource_type = "instance"
 
     tags = {
-      Name = "test"
+      Name = var.env
     }
   }
 
-  user_data = file("install_apache.sh")
+  user_data = base64encode(file("install_apache.sh"))
 }

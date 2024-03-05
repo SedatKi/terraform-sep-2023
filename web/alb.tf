@@ -3,15 +3,14 @@ resource "aws_lb" "main" {
   internal           = var.internal_feature
   load_balancer_type = var.lb_type
   security_groups    = [aws_security_group.main.id]
-  subnets            = data.aws_subnet_ids.default_subnets.ids
+  subnets            = aws_subnet.public_subnets[*].id
 
-  enable_deletion_protection = true
-
-  access_logs {
-    bucket  = "arn:aws:s3:::terraform-backend-sep-2023-sedat"
-    prefix  = "web"
-    enabled = true
-  }
+  // Log storage for monitoring, troubleshooting, etc.
+  # access_logs {
+  #   bucket  = "terraform-backend-sep-2023-sedat"
+  #   prefix  = "web"
+  #   enabled = true
+  # }
 
   tags = {
     Environment = var.env
