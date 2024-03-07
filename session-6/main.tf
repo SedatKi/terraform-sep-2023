@@ -20,33 +20,33 @@ module "vpc" {
 # qa = v0.0.3
 # dev = v0.0.4
 
-Terraform does not have automated rollback, but Cloudformation does.
-Application rollback vs Infra rollback
+# Terraform does not have automated rollback, but Cloudformation does.
+# Application rollback vs Infra rollback
 
-############## Count Meta Argument ############
-module "bucket" {
-  count = length(var.bucket_names)
-  source = "./publish_bucket"
-  name = element(var.bucket_names, count.index)
-}
+# ############## Count Meta Argument ############
+# module "bucket" {
+#   count = length(var.bucket_names)
+#   source = "./publish_bucket"
+#   name = element(var.bucket_names, count.index)
+# }
 
-variable "bucket_names" {
-  type = list
-  default = ["bucket1, bucket2, bucket3"]
-}
+# variable "bucket_names" {
+#   type = list
+#   default = ["bucket1, bucket2, bucket3"]
+# }
 
 
-############## Count Meta Argument ############
+# ############## Count Meta Argument ############
 
-module "bucket" {
-  for_each = var.bucket_names
-  source = "./publish_bucket"
-  name = each.key
-}
+# module "bucket" {
+#   for_each = var.bucket_names
+#   source = "./publish_bucket"
+#   name = each.key
+# }
 
-variable "bucket_names" {
-  type = list
-  default = ["bucket1, bucket2, bucket3"]
-}
+# variable "bucket_names" {
+#   type = list
+#   default = ["bucket1, bucket2, bucket3"]
+# }
 
-for each + for loop + 
+# for each + for loop + 
