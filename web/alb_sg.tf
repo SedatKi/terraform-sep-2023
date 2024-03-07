@@ -2,7 +2,7 @@ resource "aws_security_group" "main" {
   vpc_id      = data.aws_vpc.default.id
   name        = local.name
   description = var.lb_sg_description
-  tags = local.common_tags
+  tags        = local.common_tags
 }
 
 resource "aws_vpc_security_group_ingress_rule" "main" {

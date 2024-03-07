@@ -3,5 +3,5 @@ data "aws_vpc" "default" {
 }
 
 data "aws_route53_zone" "main" {
-  name = "cloudinjen.com"
+  name = var.domain_name
 }

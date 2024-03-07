@@ -10,7 +10,7 @@ resource "aws_launch_template" "main" {
 
   tag_specifications {
     resource_type = var.resource_type
-    tags = local.common_tags
+    tags          = local.common_tags
   }
 
   user_data = base64encode(file("install_apache.sh"))

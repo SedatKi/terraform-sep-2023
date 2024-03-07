@@ -4,5 +4,5 @@ resource "aws_lb_target_group" "main" {
   port        = var.lb_tg_port
   protocol    = var.lb_tg_protocol
   vpc_id      = data.aws_vpc.default.id
-  tags = local.common_tags
+  tags        = local.common_tags
 }

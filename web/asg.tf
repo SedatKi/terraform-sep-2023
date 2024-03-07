@@ -1,13 +1,21 @@
 resource "aws_autoscaling_group" "main" {
-  availability_zones = ["us-east-2a", "us-east-2b"]
-  desired_capacity   = 1
-  max_size           = 3
-  min_size           = 1
+  availability_zones = var.asg_availability_zone
+  desired_capacity   = var.asg_desired_capacity
+  max_size           = var.asg_max_size
+  min_size           = var.asg_min_size
 
   target_group_arns = ["${aws_lb_target_group.main.arn}"]
 
   launch_template {
     id      = aws_launch_template.main.id
-    version = "$Latest"
+    version = var.launch_template_version
+  }
+  dynamic "tag" {
+    for_each = var.extra_tags
+    content {
+      key                 = tag.value.key
+      propagate_at_launch = tag.value.propagate_at_launch
+      value               = tag.value.value
+    }
   }
 }

@@ -93,9 +93,17 @@ variable "lb_tg_protocol" {
   default     = "HTTP"
 }
 
-# ============ Subnet Variables ===================
+# ============ Subnet Variables ==================
+
 variable "public_subnet_cidrs" {
-  default = ["172.31.48.0/24", "172.31.64.0/24"] # Change as needed
+  type        = list(string)
+  description = "these are cidr blocks assigned to public subnets"
+  default     = ["172.31.48.0/24", "172.31.64.0/24"] # Change as needed
+}
+
+variable "map_public_ip_on_launch" {
+  type    = bool
+  default = true
 }
 
 # ============ A Record Variables =================
@@ -106,7 +114,6 @@ variable "domain_name" {
   default     = "cloudinjen.com"
 }
 
-
 variable "record_type" {
   type        = string
   description = "record type for route53 record registration"
@@ -114,10 +121,43 @@ variable "record_type" {
 }
 
 variable "evaluate_target_health" {
-  type    = bool
+  type        = bool
   description = "for checking the health of the resource record set"
-  default = true
+  default     = true
 }
+
+# ============= Auto Scaling Group(ASG) Variables =============
+
+variable "asg_availability_zone" {
+  type        = list(string)
+  description = "these are availability zones for asg"
+  default     = ["us-east-2a", "us-east-2b"]
+}
+
+variable "asg_desired_capacity" {
+  type        = number
+  description = "this is the desired capacity of instances for asg"
+  default     = 1
+}
+
+variable "asg_max_size" {
+  type        = number
+  description = "this is the max size of instances for asg"
+  default     = 3
+}
+
+variable "asg_min_size" {
+  type        = number
+  description = "this is the main size of instances for asg"
+  default     = 1
+}
+
+variable "launch_template_version" {
+  description = "The version of the launch template to use"
+  type        = string
+  default     = "$Latest"
+}
+
 
 # ============= ASG Launch Template Variables ==================
 
@@ -134,12 +174,20 @@ variable "lt_instance_type" {
 }
 
 variable "public_ip_association" {
-  type    = bool
+  type        = bool
   description = "for associating public ip address onto asg instances"
-  default = true
+  default     = true
 }
 
+# ============ Providers ===========
+
+variable "region" {
+  type        = string
+  description = "this is the selected region for infra"
+  default     = "us-east-2"
+}
 # ============ Tags ================
+
 variable "team" {
   type    = string
   default = "devops"
@@ -173,4 +221,41 @@ variable "owner" {
 variable "resource_type" {
   type    = string
   default = "instance"
+}
+
+# =============== Extra tags ================
+
+variable "extra_tags" {
+  default = [
+    {
+      key                 = "env"
+      value               = "dev"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "team"
+      value               = "devops"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "app"
+      value               = "backend"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "project"
+      value               = "tom"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "managed_by"
+      value               = "terraform"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "owner"
+      value               = "sedat"
+      propagate_at_launch = true
+    }
+  ]
 }

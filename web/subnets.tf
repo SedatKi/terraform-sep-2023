@@ -3,19 +3,13 @@ resource "aws_subnet" "public_subnets" {
   vpc_id                  = data.aws_vpc.default.id
   cidr_block              = var.public_subnet_cidrs[count.index]
   availability_zone       = element(["us-east-2a", "us-east-2b"], count.index)
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "PublicSubnet-${count.index + 1}"
-  }
+  map_public_ip_on_launch = var.map_public_ip_on_launch
+  tags                    = local.common_tags
 }
 
 resource "aws_route_table" "public_route_table" {
   vpc_id = data.aws_vpc.default.id
-
-  tags = {
-    Name = "PublicRouteTable"
-  }
+  tags   = local.common_tags
 }
 
 resource "aws_route_table_association" "public_subnet_association" {
