@@ -19,15 +19,15 @@ variable "default_feature" {
 }
 
 variable "listener_port" {
-  type        = string
+  type        = list(string)
   description = "port number for listener"
-  default     = "80"
+  default     = ["80", "443"]
 }
 
 variable "listener_protocol" {
-  type        = string
+  type        = list(string)
   description = "protocol type for listener"
-  default     = "HTTP"
+  default     = ["HTTP", "HTTPS"]
 }
 
 variable "routing_action" {
