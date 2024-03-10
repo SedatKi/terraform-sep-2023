@@ -15,25 +15,25 @@ resource "aws_lb" "main" {
   tags = local.common_tags
 }
 
-# Configuration for ALB listener to forward traffic to the target group
+# Configuration for ALB listener to forward or redirect traffic to the target group
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = var.http_port
+  protocol          = var.http_protocol
   default_action {
-    type             = "redirect"
+    type = var.routing_type
     redirect {
-      port = "443"
-      protocol = "HTTPS"
-      status_code = "HTTP_301"
+      port        = var.https_port
+      protocol    = var.https_protocol
+      status_code = var.redirect_status_code
     }
   }
 }
 
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
-  port              = "443"
-  protocol          = "HTTPS"
+  port              = var.https_port
+  protocol          = var.https_protocol
   certificate_arn   = aws_acm_certificate.acm.arn
   default_action {
     type             = var.routing_action

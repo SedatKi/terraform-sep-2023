@@ -8,7 +8,7 @@ data "aws_route53_zone" "main" {
 
 data "aws_internet_gateway" "default" {
   filter {
-    name   = "attachment.vpc-id"
+    name   = var.internet_gateway_name
     values = [data.aws_vpc.default.id]
   }
 }

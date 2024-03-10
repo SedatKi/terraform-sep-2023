@@ -18,21 +18,45 @@ variable "default_feature" {
   default = true
 }
 
-variable "listener_port" {
-  type        = list(string)
-  description = "port number for listener"
-  default     = ["80", "443"]
+variable "http_port" {
+  type        = string
+  description = "http port number for listener"
+  default     = "80"
 }
 
-variable "listener_protocol" {
-  type        = list(string)
-  description = "protocol type for listener"
-  default     = ["HTTP", "HTTPS"]
+variable "http_protocol" {
+  type        = string
+  description = "http protocol type for listener"
+  default     = "HTTP"
+}
+
+variable "redirect_status_code" {
+  type        = string
+  description = "The HTTP status code used for the redirect."
+  default     = "HTTP_301"
+}
+
+variable "https_port" {
+  type        = string
+  description = "port number to redirect traffic to"
+  default     = "443"
+}
+
+variable "https_protocol" {
+  type        = string
+  description = "https protocol type for listener"
+  default     = "HTTPS"
+}
+
+variable "routing_type" {
+  type        = string
+  description = "routing action to taken by listener redirect port 80 traffic to port 443"
+  default     = "redirect"
 }
 
 variable "routing_action" {
   type        = string
-  description = "type of routing action"
+  description = "routing action taken by listener for incoming traffic, defaulting to 'forward'"
   default     = "forward"
 }
 # ======== ALB Security Group Variables =========
@@ -258,4 +282,10 @@ variable "extra_tags" {
       propagate_at_launch = true
     }
   ]
+}
+
+# ============ Uncategorized Variables =================
+variable "internet_gateway_name" {
+  type    = string
+  default = "attachment.vpc-id"
 }
