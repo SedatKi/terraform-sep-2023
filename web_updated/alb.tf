@@ -5,18 +5,10 @@ resource "aws_lb" "main" {
   security_groups    = [aws_security_group.main.id]
   subnets            = var.subnets 
   enable_deletion_protection = false
-  
-  // Log storage for monitoring, troubleshooting, etc.
-  # access_logs {
-  #   bucket  = "terraform-backend-sep-2023-sedat"
-  #   prefix  = "web"
-  #   enabled = true
-  # }
 
   tags = local.common_tags
 }
 
-# Configuration for ALB listener to forward or redirect traffic to the target group
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
   port              = var.http_port
