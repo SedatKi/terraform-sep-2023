@@ -1,7 +1,7 @@
 resource "aws_acm_certificate" "acm" {
   domain_name               = var.domain_name
   subject_alternative_names = ["*.${var.domain_name}"]
-  validation_method         = "DNS"
+  validation_method         = var.validation_method
   tags                      = local.common_tags
 
   lifecycle {
@@ -17,7 +17,7 @@ resource "aws_acm_certificate_validation" "acm_validation" {
 
 data "aws_route53_zone" "hosted_zone" {
   name         = var.domain_name
-  private_zone = false
+  private_zone = var.private_zone
 }
 
 resource "aws_route53_record" "api_validation" {
@@ -29,7 +29,7 @@ resource "aws_route53_record" "api_validation" {
     }
   }
 
-  allow_overwrite = true
+  allow_overwrite = var.allow_overwrite
   name            = each.value.name
   records         = [each.value.record]
   ttl             = 60

@@ -8,14 +8,22 @@ resource "aws_autoscaling_group" "main" {
 
   launch_template {
     id      = aws_launch_template.main.id
-    version = var.launch_template_version
+    version = var.lt_version
   }
+
   dynamic "tag" {
     for_each = var.extra_tags
     content {
       key                 = tag.value.key
       propagate_at_launch = tag.value.propagate_at_launch
       value               = tag.value.value
+    }
+  }
+
+  instance_refresh {
+    strategy = var.strategy_type
+    preferences {
+      min_healthy_percentage = var.min_healthy_percentage
     }
   }
 }

@@ -59,6 +59,12 @@ variable "routing_action" {
   description = "routing action taken by listener for incoming traffic, defaulting to 'forward'"
   default     = "forward"
 }
+
+variable "subnets" {
+  type    = list(string)
+  default = ["subnet-0c6a84b8806057867", "subnet-0e3c1b30e91350711"]
+}
+
 # ======== ALB Security Group Variables =========
 
 variable "lb_sg_description" {
@@ -119,16 +125,16 @@ variable "lb_tg_protocol" {
 
 # ============ Subnet Variables ==================
 
-variable "public_subnet_cidrs" {
-  type        = list(string)
-  description = "these are cidr blocks assigned to public subnets"
-  default     = ["172.31.48.0/24", "172.31.64.0/24"] # Change as needed
-}
+# variable "public_subnet_cidrs" {
+#   type        = list(string)
+#   description = "these are cidr blocks assigned to public subnets"
+#   default     = ["172.31.48.0/24", "172.31.64.0/24"] # Change as needed
+# }
 
-variable "map_public_ip_on_launch" {
-  type    = bool
-  default = true
-}
+# variable "map_public_ip_on_launch" {
+#   type    = bool
+#   default = true
+# }
 
 # ============ A Record Variables =================
 
@@ -147,6 +153,26 @@ variable "record_type" {
 variable "evaluate_target_health" {
   type        = bool
   description = "for checking the health of the resource record set"
+  default     = true
+}
+
+# ============= ACM Variables ===========
+
+variable "validation_method" {
+  type        = string
+  description = "validation method for creating acm certification"
+  default     = "DNS"
+}
+
+variable "private_zone" {
+  type        = bool
+  description = "for creating a domain in a public zone"
+  default     = false
+}
+
+variable "allow_overwrite" {
+  type        = bool
+  description = "allow overwrite of existing record, if any"
   default     = true
 }
 
@@ -172,16 +198,27 @@ variable "asg_max_size" {
 
 variable "asg_min_size" {
   type        = number
-  description = "this is the main size of instances for asg"
+  description = "this is the min size of instances for asg"
   default     = 1
 }
 
-variable "launch_template_version" {
+variable "lt_version" {
   description = "The version of the launch template to use"
   type        = string
-  default     = "$Latest"
+  default     = "$Default"
 }
 
+variable "strategy_type" {
+  description = "The type of strategy for instance refresh"
+  type        = string
+  default     = "Rolling"
+}
+
+variable "min_healthy_percentage" {
+  type        = number
+  description = "Min Capacity percentage in ASG that must remain healthy during an instance refresh to allow the operation to continue"
+  default     = 50
+}
 
 # ============= ASG Launch Template Variables ==================
 
@@ -200,6 +237,12 @@ variable "lt_instance_type" {
 variable "public_ip_association" {
   type        = bool
   description = "for associating public ip address onto asg instances"
+  default     = true
+}
+
+variable "update_default_version" {
+  type        = bool
+  description = "whether to update default version with each update"
   default     = true
 }
 

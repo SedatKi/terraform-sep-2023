@@ -8,10 +8,12 @@ resource "aws_launch_template" "main" {
     security_groups             = [aws_security_group.main.id]
   }
 
+  update_default_version = var.update_default_version
+
   tag_specifications {
     resource_type = var.resource_type
     tags          = local.common_tags
   }
 
-  user_data = base64encode(file("install_apache.sh"))
+  user_data = filebase64("install_apache.sh")
 }
