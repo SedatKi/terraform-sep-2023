@@ -1,9 +1,9 @@
 resource "aws_lb" "main" {
-  name               = replace(local.name, "sg", "alb")
-  internal           = var.internal_feature
-  load_balancer_type = var.lb_type
-  security_groups    = [aws_security_group.main.id]
-  subnets            = var.subnets 
+  name                       = replace(local.name, "sg", "alb")
+  internal                   = var.internal_feature
+  load_balancer_type         = var.lb_type
+  security_groups            = [aws_security_group.main.id]
+  subnets                    = var.subnets
   enable_deletion_protection = false
 
   tags = local.common_tags
